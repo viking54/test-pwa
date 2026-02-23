@@ -10,6 +10,8 @@ function App() {
   const [status, setStatus] = useState('')
   const [permissionStatus, setPermissionStatus] = useState({})
   const [capturedPhoto, setCapturedPhoto] = useState(null)
+  const [deferredPrompt, setDeferredPrompt] = useState(null)
+  const [isInstalled, setIsInstalled] = useState(false)
   
   const videoRef = useRef(null)
   const audioRef = useRef(null)
@@ -18,7 +20,44 @@ function App() {
   // Check permissions on load
   useEffect(() => {
     checkPermissions()
+    
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstalled(true)
+    }
+    
+    // Listen for install prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault()
+      setDeferredPrompt(e)
+      console.log('Install prompt available')
+    })
+    
+    // Listen for app installed
+    window.addEventListener('appinstalled', () => {
+      setIsInstalled(true)
+      setStatus('✅ PWA installed successfully!')
+      setDeferredPrompt(null)
+    })
   }, [])
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) {
+      setStatus('ℹ️ Install not available. Use browser menu to install.')
+      return
+    }
+    
+    deferredPrompt.prompt()
+    const { outcome } = await deferredPrompt.userChoice
+    
+    if (outcome === 'accepted') {
+      setStatus('✅ Installing PWA...')
+    } else {
+      setStatus('ℹ️ Installation cancelled')
+    }
+    
+    setDeferredPrompt(null)
+  }
 
   const checkPermissions = async () => {
     const perms = {}
@@ -193,6 +232,32 @@ function App() {
       <p className="subtitle">Proving PWAs = Native-like capabilities</p>
       
       <div className="status">{status}</div>
+
+      {/* Install Button */}
+      {!isInstalled && (
+        <div className="section install-section">
+          <h2>📲 Install PWA</h2>
+          {deferredPrompt ? (
+            <button onClick={handleInstallClick} className="install-button">
+              Install App
+            </button>
+          ) : (
+            <div className="install-instructions">
+              <p>To install this PWA:</p>
+              <p><strong>Desktop:</strong> Look for install icon (⊕) in address bar</p>
+              <p><strong>Android:</strong> Menu (⋮) → "Install app"</p>
+              <p><strong>iOS:</strong> Share (□↑) → "Add to Home Screen"</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {isInstalled && (
+        <div className="section installed-badge">
+          <h2>✅ PWA Installed!</h2>
+          <p>App is running in standalone mode</p>
+        </div>
+      )}
 
       {/* Permission Status */}
       <div className="section">

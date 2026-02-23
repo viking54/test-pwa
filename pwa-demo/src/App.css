@@ -166,6 +166,61 @@ button:disabled {
   font-weight: 500;
 }
 
+.install-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+}
+
+.install-section h2 {
+  color: white;
+}
+
+.install-button {
+  background: white;
+  color: #667eea;
+  font-size: 18px;
+  padding: 15px 40px;
+  min-width: 200px;
+}
+
+.install-button:hover {
+  background: #f0f0f0;
+  color: #5568d3;
+}
+
+.install-instructions {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.install-instructions p {
+  margin: 8px 0;
+  color: white;
+}
+
+.install-instructions strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.installed-badge {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  text-align: center;
+}
+
+.installed-badge h2 {
+  color: white;
+}
+
+.installed-badge p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+}
+
 @media (max-width: 600px) {
   .app {
     padding: 15px;
