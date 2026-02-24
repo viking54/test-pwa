@@ -240,8 +240,7 @@ function App() {
   return (
     <div className="app">
       <h1>PWA Feature Test</h1>
-      <p className="subtitle">Proving PWAs = Native-like capabilities</p>
-      
+
       <div className="status">{status}</div>
 
       {/* Install Button */}
@@ -254,10 +253,7 @@ function App() {
             </button>
           ) : (
             <div className="install-instructions">
-              <p>To install this PWA:</p>
-              <p><strong>Desktop:</strong> Look for install icon (⊕) in address bar</p>
-              <p><strong>Android:</strong> Menu (⋮) → "Install app"</p>
-              <p><strong>iOS:</strong> Share (□↑) → "Add to Home Screen"</p>
+
             </div>
           )}
         </div>
