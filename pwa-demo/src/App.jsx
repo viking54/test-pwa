@@ -12,6 +12,8 @@ function App() {
   const [capturedPhoto, setCapturedPhoto] = useState(null)
   const [deferredPrompt, setDeferredPrompt] = useState(null)
   const [isInstalled, setIsInstalled] = useState(false)
+  const [locationHistory, setLocationHistory] = useState([])
+  const [isTracking, setIsTracking] = useState(false)
   
   const videoRef = useRef(null)
   const audioRef = useRef(null)
@@ -187,12 +189,15 @@ function App() {
 
     const id = navigator.geolocation.watchPosition(
       (position) => {
-        setLocation({
+        const newLocation = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
           accuracy: position.coords.accuracy,
           timestamp: new Date(position.timestamp).toLocaleTimeString()
-        })
+        }
+        setLocation(newLocation)
+        setLocationHistory(prev => [...prev, newLocation].slice(-10)) // Keep last 10
+        setIsTracking(true)
         setStatus('✅ GPS tracking active (foreground)')
       },
       (err) => {
@@ -207,8 +212,14 @@ function App() {
     if (watchId) {
       navigator.geolocation.clearWatch(watchId)
       setWatchId(null)
+      setIsTracking(false)
       setStatus('GPS tracking stopped')
     }
+  }
+
+  const clearLocationHistory = () => {
+    setLocationHistory([])
+    setStatus('Location history cleared')
   }
 
   // Test Audio Playback
@@ -318,6 +329,7 @@ function App() {
             <p>Longitude: {location.lng.toFixed(6)}</p>
             <p>Accuracy: {location.accuracy.toFixed(2)}m</p>
             <p>Time: {location.timestamp}</p>
+            {isTracking && <p className="tracking-indicator">🔴 TRACKING ACTIVE</p>}
           </div>
         )}
         <div className="buttons">
@@ -330,6 +342,37 @@ function App() {
           </button>
         </div>
         <p className="note">Tracking works in foreground (like Teams/Zoom)</p>
+        
+        {/* Location History */}
+        {locationHistory.length > 0 && (
+          <div className="location-history">
+            <div className="history-header">
+              <h3>📊 Location History (Last 10 Updates)</h3>
+              <button onClick={clearLocationHistory} className="clear-btn">Clear</button>
+            </div>
+            <div className="history-list">
+              {locationHistory.map((loc, index) => (
+                <div key={index} className="history-item">
+                  <span className="history-time">{loc.timestamp}</span>
+                  <span className="history-coords">
+                    {loc.lat.toFixed(6)}, {loc.lng.toFixed(6)}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="test-instructions">
+              <h4>🧪 Test Background Behavior:</h4>
+              <ol>
+                <li>Click "Start Tracking" above</li>
+                <li>Watch location updates appear here</li>
+                <li>Press Home button or switch apps (minimize)</li>
+                <li>Wait 30 seconds</li>
+                <li>Come back to this app</li>
+                <li><strong>Notice:</strong> No new updates while app was in background! ✅</li>
+              </ol>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Audio */}

@@ -221,6 +221,108 @@ button:disabled {
   font-size: 1.1rem;
 }
 
+.tracking-indicator {
+  color: #ff4444;
+  font-weight: bold;
+  font-size: 1.1rem;
+  animation: pulse 1.5s infinite;
+  margin-top: 10px;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.location-history {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.history-header h3 {
+  margin: 0;
+  color: #667eea;
+  font-size: 1.1rem;
+}
+
+.clear-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  min-width: auto;
+  background: #ff6b6b;
+}
+
+.clear-btn:hover {
+  background: #ff5252;
+}
+
+.history-list {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 10px;
+  margin: 5px 0;
+  background: white;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  border-left: 3px solid #667eea;
+}
+
+.history-time {
+  color: #666;
+  font-weight: 500;
+  min-width: 100px;
+}
+
+.history-coords {
+  color: #333;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.test-instructions {
+  margin-top: 15px;
+  padding: 15px;
+  background: #fff3cd;
+  border-radius: 8px;
+  border-left: 4px solid #ffc107;
+}
+
+.test-instructions h4 {
+  margin: 0 0 10px 0;
+  color: #856404;
+}
+
+.test-instructions ol {
+  margin: 10px 0 0 20px;
+  padding: 0;
+}
+
+.test-instructions li {
+  margin: 8px 0;
+  color: #856404;
+  line-height: 1.5;
+}
+
+.test-instructions strong {
+  color: #d39e00;
+}
+
 @media (max-width: 600px) {
   .app {
     padding: 15px;

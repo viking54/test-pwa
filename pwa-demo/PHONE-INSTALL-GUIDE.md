@@ -14,7 +14,6 @@
 - Looks like native app
 
 ---
-
 ## Android (Chrome Browser)
 
 ### Step 1: Open in Chrome
